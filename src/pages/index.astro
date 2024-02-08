@@ -1,0 +1,83 @@
+---
+import IndexLayout from "../layouts/index-layout.astro";
+import dayjs from "dayjs";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+
+let renderCount = 0;
+---
+
+<IndexLayout pageName="index">
+  <div>
+    <div class="py-[3rem] italic">Recently Posted</div>
+    <ul class="mb-4">
+      {
+        allPosts.reverse().map((post) => {
+          if (renderCount > 9) {
+            return;
+          }
+
+          let { deprecated } = post.data;
+
+          let date_str = post.slug;
+
+          let date_array = date_str.split("-");
+          let year = date_array[0];
+          let month = date_array[1];
+          let day = date_array[2];
+
+          let date = `${year}-${month}-${day}`;
+
+          let datePath = date.split("-").join("/");
+          let postPath = post.slug.slice(11);
+
+          renderCount++;
+
+          return (
+            <li class="group">
+              <a href={`/${datePath}/${postPath}`} class="block mb-8">
+                <div class="text-xs mb-2">
+                  <span class="opacity-80">
+                    {dayjs(date).format("YYYY-MM-DD")}
+                  </span>
+                  {deprecated && (
+                    <span class="ml-2 text-red-500 dark:text-red-400 font-black">
+                      Deprecated
+                    </span>
+                  )}
+                </div>
+                <div class="text-base font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
+                  {post.data.title}
+                </div>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <div class="text-center pt-8">
+      <a
+        href="/all-posts"
+        class="dark:bg-neutral-900 bg-neutral-100 rounded-full text-sm px-6 py-2 flex items-center w-[10rem] mx-auto hover:shadow-xl transition-shadow"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-balloon w-5 h-5"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+            d="M14 8a2 2 0 0 0 -2 -2"></path><path
+            d="M6 8a6 6 0 1 1 12 0c0 4.97 -2.686 9 -6 9s-6 -4.03 -6 -9"
+          ></path><path d="M12 17v1a2 2 0 0 1 -2 2h-3a2 2 0 0 0 -2 2"
+          ></path></svg
+        >
+        <span class="ml-1">查看全部文章</span>
+      </a>
+    </div>
+  </div>
+</IndexLayout>
