@@ -29,10 +29,6 @@ const currentTag = Astro.params.tag;
     <ul class="mb-4">
       {
         allPosts.reverse().map((post) => {
-          if (!post.data.tags.includes(currentTag)) {
-            return;
-          }
-
           let { deprecated } = post.data;
           let date_str = post.slug;
 
