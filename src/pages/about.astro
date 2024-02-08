@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/BlogPost.astro";
+const currentDate = new Date();
 ---
 
-<Layout title="About Me" description="233" date="2024-2-8" />
+<Layout title="About Me" description="233" date={currentDate} />
