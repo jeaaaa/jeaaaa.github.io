@@ -6,7 +6,7 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://jeaaaa.github.io',
+  site: 'https://blog.acfun.wiki/',
   integrations: [mdx(), sitemap(), react(), tailwind({
     applyBaseStyles: false,
   })]
