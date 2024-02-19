@@ -1,11 +1,12 @@
 ---
 import GlobalStyle from "../components/global-style.astro";
 import Footer from "../components/Footer.astro";
-import Nav from "../components/nav.astro";
 import Meta from "../components/meta.astro";
+import Menu from "@/components/header/index.tsx";
 import "@/styles/global.css";
 
-let { pageName } = Astro.props;
+let { pageName, highlight } = Astro.props;
+console.log(highlight);
 ---
 
 <html lang="en">
@@ -15,10 +16,9 @@ let { pageName } = Astro.props;
     <title></title>
     <GlobalStyle />
     <Meta />
-    <!-- <Og title="jea的博客" /> -->
   </head>
   <body>
-    <Nav highlight={pageName === "index" ? "index" : ""} />
+    <Menu client:load highlight={highlight} />
     <main>
       <div id="app" class="flex justify-center">
         <slot />
