@@ -2,7 +2,8 @@
 import GlobalStyle from "../components/global-style.astro";
 import Footer from "../components/Footer.astro";
 import Meta from "../components/meta.astro";
-import Menu from "@/components/header/index.tsx";
+import Navbar from "@/components/header";
+import { DeviceDetector } from "@/hooks/useDevice";
 import "@/styles/global.css";
 
 let { highlight } = Astro.props;
@@ -15,9 +16,10 @@ let { highlight } = Astro.props;
     <title></title>
     <GlobalStyle />
     <Meta />
+    <DeviceDetector client:only="react" />
   </head>
   <body>
-    <Menu client:load highlight={highlight} />
+    <Navbar client:only="react" />
     <main>
       <div id="app" class="flex justify-center">
         <slot />
