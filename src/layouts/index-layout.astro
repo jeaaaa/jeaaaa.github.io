@@ -4,6 +4,7 @@ import Footer from "../components/Footer.astro";
 import Meta from "../components/meta.astro";
 import Navbar from "@/components/header";
 import { DeviceDetector } from "@/hooks/useDevice";
+import BasicScripts from "@/components/common/BasicScripts.astro";
 import "@/styles/global.css";
 
 let { highlight } = Astro.props;
@@ -16,15 +17,17 @@ let { highlight } = Astro.props;
     <title></title>
     <GlobalStyle />
     <Meta />
-    <DeviceDetector client:only="react" />
+    <!-- <DeviceDetector client:load /> -->
   </head>
   <body>
-    <Navbar client:only="react" />
+    <Navbar client:load />
     <main>
       <div id="app" class="flex justify-center">
         <slot />
       </div>
       <Footer />
     </main>
+
+    <BasicScripts />
   </body>
 </html>
