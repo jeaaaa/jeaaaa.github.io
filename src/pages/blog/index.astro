@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import BlogList from "../../components/blog/blog-list";
+import type { BlogPost } from "../../components/blog/blog-card";
+
+// 获取所有非草稿状态的博客文章
+const allBlogPosts = await getCollection("blog", ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true;
+});
+
+// 按发布日期排序，最新的在前面
+const sortedPosts = allBlogPosts.sort(
+  (a, b) =>
+    new Date(b.data.publishDate).valueOf() -
+    new Date(a.data.publishDate).valueOf()
+);
+
+// 将内容集合转换为BlogPost类型
+const posts: BlogPost[] = sortedPosts.map((post) => ({
+  slug: post.slug,
+  title: post.data.title,
+  excerpt: post.data.description,
+  publishDate: post.data.publishDate.toISOString(),
+  category: {
+    name: post.data.category,
+  },
+  coverImage: post.data.coverImage,
+  author: {
+    name: post.data.author.name,
+    avatar: post.data.author.avatar,
+  },
+  readingTime: Math.ceil(post.body.length / 1000), // 简单估算阅读时间
+}));
+
+// 提取所有博客分类
+const categories = Array.from(
+  new Set(posts.map((post) => post.category.name))
+).map((name) => ({
+  name,
+  count: posts.filter((post) => post.category.name === name).length,
+}));
+---
+
+<Layout
+  title="博客文章 - 思考随笔"
+  description="探索各种关于技术、设计、生活和旅行的文章"
+  currentPath={Astro.url.pathname}
+>
+  <div class="container mx-auto py-12 px-4 sm:px-6">
+    <BlogList client:load posts={posts} categories={categories} />
+  </div>
+</Layout>

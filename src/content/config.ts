@@ -1,24 +1,25 @@
 import { defineCollection, z } from "astro:content";
 
-const blog = defineCollection({
+// 博客文章集合的Schema
+const blogCollection = defineCollection({
   type: "content",
-  // Type-check frontmatter using a schema
-  // schema: z.object({
-  // 	title: z.string(),
-  // 	description: z.string(),
-  // 	// Transform string to Date object
-  // 	pubDate: z.coerce.date(),
-  // 	updatedDate: z.coerce.date().optional(),
-  // 	heroImage: z.string().optional(),
-  // }),
   schema: z.object({
     title: z.string(),
-    tags: z.array(z.string()).optional(),
-    date: z.coerce.date(),
     description: z.string(),
-    deprecated: z.boolean().optional(),
-    draft: z.boolean().optional(),
+    publishDate: z.date(),
+    lastUpdated: z.date().optional(),
+    coverImage: z.string(),
+    category: z.string(),
+    author: z.object({
+      name: z.string(),
+      avatar: z.string(),
+    }),
+    tags: z.array(z.string()).optional(),
+    draft: z.boolean().optional().default(false),
   }),
 });
 
-export const collections = { blog };
+// 导出所有集合配置
+export const collections = {
+  blog: blogCollection,
+};

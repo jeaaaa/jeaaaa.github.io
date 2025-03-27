@@ -1,6 +1,307 @@
 ---
-import Layout from "../layouts/BlogPost.astro";
-const currentDate = new Date();
+import Layout from "../layouts/Layout.astro";
+import AnimatedImage from "../components/ui/animated-image";
 ---
 
-<Layout title="About Me" description="233" date={currentDate} />
+<Layout title="关于我 - 思考随笔" currentPath={Astro.url.pathname}>
+  <div class="container mx-auto py-12 px-4 sm:px-6">
+    <main class="w-full max-w-4xl mx-auto">
+      <div class="flex flex-col md:flex-row gap-10 items-center md:items-start">
+        <AnimatedImage
+          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+          alt="个人头像"
+          wrapperClassName="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden gradient-bg flex-shrink-0"
+          className="w-full h-full object-cover mix-blend-overlay opacity-80"
+          animation="fade"
+        />
+
+        <div class="flex-1 fade-in">
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">李明</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+            前端工程师 | UI/UX设计师 | 技术写作者
+          </p>
+
+          <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
+            <p>
+              你好！我是李明，一位热爱技术与设计的创作者。我在前端开发领域有着8年的经验，对用户体验设计充满热情。
+            </p>
+            <p>
+              我相信技术应该服务于人，而不是相反。在我的职业生涯中，我始终致力于创造既美观又实用的数字产品，帮助用户解决实际问题。
+            </p>
+            <p>
+              在这个博客中，我将分享我在技术、设计和生活方面的思考与实践经验。无论是前端开发的最佳实践，还是UI设计的美学原则，亦或是对数字生活的反思，我都希望能与你一同探讨。
+            </p>
+            <p>
+              除了写代码和设计界面，我还喜欢摄影、阅读和旅行。这些爱好让我能够从不同角度观察世界，获取灵感。
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-4 mb-8 slide-up">
+            <a
+              href="mailto:contact@example.com"
+              class="inline-flex items-center px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 transition-colors"
+            >
+              <i class="bx bx-envelope mr-2 text-lg"></i>
+              联系我
+            </a>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <i class="bx bxl-github mr-2 text-lg"></i>
+              GitHub
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <i class="bx bxl-twitter mr-2 text-lg"></i>
+              Twitter
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 slide-up delay-200">
+        <h2 class="text-2xl font-bold mb-6">技能与专长</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover-lift"
+          >
+            <div class="flex items-center gap-4 mb-4">
+              <div
+                class="w-12 h-12 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+              >
+                <i class="bx bx-code-alt text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold">前端开发</h3>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">
+              熟练掌握现代前端技术栈，包括HTML5、CSS3、JavaScript/TypeScript，以及React、Vue等框架。
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >React</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >Vue</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >TypeScript</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >Tailwind CSS</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >Next.js</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover-lift"
+          >
+            <div class="flex items-center gap-4 mb-4">
+              <div
+                class="w-12 h-12 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+              >
+                <i class="bx bx-palette text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold">UI/UX 设计</h3>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">
+              擅长用户体验设计与界面设计，注重用户调研、交互设计和视觉美学的和谐统一。
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >Figma</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >用户研究</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >原型设计</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >交互设计</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >设计系统</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover-lift"
+          >
+            <div class="flex items-center gap-4 mb-4">
+              <div
+                class="w-12 h-12 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
+              >
+                <i class="bx bx-book-open text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold">技术写作</h3>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">
+              热衷于分享技术知识和经验，擅长将复杂概念转化为清晰、易懂的文章和教程。
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >教程创作</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >技术博客</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >文档编写</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >演讲分享</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover-lift"
+          >
+            <div class="flex items-center gap-4 mb-4">
+              <div
+                class="w-12 h-12 flex items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
+              >
+                <i class="bx bx-camera text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold">摄影与创意</h3>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">
+              将摄影作为创意表达的媒介，擅长捕捉生活中的美好瞬间和独特视角。
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >街头摄影</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >风景摄影</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >人文纪实</span
+              >
+              <span
+                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                >后期处理</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 slide-up delay-300">
+        <h2 class="text-2xl font-bold mb-6">联系我</h2>
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+          <p class="text-gray-600 dark:text-gray-300 mb-6">
+            如果你对我的文章有任何问题，或者想要探讨合作机会，欢迎通过以下方式联系我：
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              >
+                <i class="bx bx-envelope text-xl"></i>
+              </div>
+              <div>
+                <span class="text-sm text-gray-500 dark:text-gray-400 block"
+                  >邮箱</span
+                >
+                <a
+                  href="mailto:contact@example.com"
+                  class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  >contact@example.com</a
+                >
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              >
+                <i class="bx bxl-twitter text-xl"></i>
+              </div>
+              <div>
+                <span class="text-sm text-gray-500 dark:text-gray-400 block"
+                  >Twitter</span
+                >
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  >@limingtw</a
+                >
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              >
+                <i class="bx bxl-github text-xl"></i>
+              </div>
+              <div>
+                <span class="text-sm text-gray-500 dark:text-gray-400 block"
+                  >GitHub</span
+                >
+                <a
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  >github.com/liming</a
+                >
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              >
+                <i class="bx bxl-linkedin text-xl"></i>
+              </div>
+              <div>
+                <span class="text-sm text-gray-500 dark:text-gray-400 block"
+                  >LinkedIn</span
+                >
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  >linkedin.com/in/liming</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>

@@ -1,0 +1,136 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { formatDate, getReadingTime } from "../../lib/utils";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("blog");
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// 相关文章（根据分类查找相关文章，排除当前文章）
+const allPosts = await getCollection("blog");
+const relatedPosts = allPosts
+  .filter(
+    (post) =>
+      post.data.category === entry.data.category && post.slug !== entry.slug
+  )
+  .sort(() => Math.random() - 0.5) // 随机排序
+  .slice(0, 2); // 只取前两篇
+
+// 获取分类对应的样式类
+function getCategoryColorClass(categoryName) {
+  const colorMap = {
+    技术: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
+    设计: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
+    生活: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
+    旅行: "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400",
+    default: "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300",
+  };
+
+  return colorMap[categoryName] || colorMap.default;
+}
+
+// 估算阅读时间
+const readingTime = getReadingTime(entry.body);
+---
+
+<Layout
+  title={`${entry.data.title} - 思考随笔`}
+  description={entry.data.description}
+  currentPath={Astro.url.pathname}
+>
+  <div class="container mx-auto py-8 px-4 sm:px-6">
+    <article class="max-w-4xl mx-auto">
+      <a
+        href="/blog"
+        class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 mb-6 transition-colors"
+      >
+        <i class="bx bx-arrow-back mr-2"></i>
+        返回博客列表
+      </a>
+
+      <div class="mb-8 fade-in">
+        <span
+          class={`px-3 py-1 text-sm font-medium rounded-full ${getCategoryColorClass(entry.data.category)}`}
+        >
+          {entry.data.category}
+        </span>
+        <h1 class="text-3xl md:text-4xl font-bold mt-4 mb-4">
+          {entry.data.title}
+        </h1>
+        <div
+          class="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400"
+        >
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+              <img
+                src={entry.data.author.avatar}
+                alt={`${entry.data.author.name}的头像`}
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <span class="font-medium text-gray-900 dark:text-white">
+              {entry.data.author.name}
+            </span>
+          </div>
+          <span>{formatDate(entry.data.publishDate)}</span>
+          <span>阅读时间: 约{readingTime}分钟</span>
+        </div>
+      </div>
+
+      <div class="rounded-xl overflow-hidden mb-8 slide-up">
+        <img
+          src={entry.data.coverImage}
+          alt={`${entry.data.title}的封面图片`}
+          class="w-full h-auto object-cover"
+        />
+      </div>
+
+      <div
+        class="prose prose-lg dark:prose-invert max-w-none slide-up delay-100"
+      >
+        <Content />
+      </div>
+
+      {
+        relatedPosts.length > 0 && (
+          <div class="border-t border-gray-200 dark:border-gray-800 mt-12 pt-8 slide-up delay-200">
+            <h3 class="text-xl font-semibold mb-6">相关文章</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {relatedPosts.map((post) => (
+                <a
+                  href={`/blog/${post.slug}`}
+                  class="flex items-start gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors hover-lift"
+                >
+                  <div class="w-20 h-20 shrink-0 rounded-md overflow-hidden">
+                    <img
+                      src={post.data.coverImage}
+                      alt={`${post.data.title}的相关文章图片`}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div>
+                    <h4 class="font-medium mb-1 line-clamp-2">
+                      {post.data.title}
+                    </h4>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">
+                      {formatDate(post.data.publishDate)}
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </article>
+  </div>
+</Layout>

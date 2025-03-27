@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>个人博客UI设计</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              },
+              secondary: {
+                50: "#fdf4ff",
+                100: "#fae8ff",
+                200: "#f5d0fe",
+                300: "#f0abfc",
+                400: "#e879f9",
+                500: "#d946ef",
+                600: "#c026d3",
+                700: "#a21caf",
+                800: "#86198f",
+                900: "#701a75",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/css">
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+      .page-container {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .page {
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+      }
+
+      /* 微妙动画效果 */
+      .hover-lift {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+
+      .hover-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+          0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      }
+
+      .dark .hover-lift:hover {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3),
+          0 8px 10px -6px rgba(0, 0, 0, 0.2);
+      }
+
+      /* 渐变背景 */
+      .gradient-bg {
+        background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+      }
+
+      .dark .gradient-bg {
+        background: linear-gradient(120deg, #4b6cb7 0%, #182848 100%);
+      }
+
+      /* 滚动条美化 */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
+
+      .dark ::-webkit-scrollbar-thumb {
+        background: #475569;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-sans transition-colors duration-300"
+  >
+    <div class="fixed top-4 right-4 z-50">
+      <button
+        id="theme-toggle"
+        class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md transition-all duration-300"
+      >
+        <i
+          class="bx bx-sun text-xl hidden dark:inline-block text-yellow-400"
+        ></i>
+        <i
+          class="bx bx-moon text-xl inline-block dark:hidden text-gray-700"
+        ></i>
+      </button>
+    </div>
+
+    <div
+      class="page-container flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700"
+    >
+      <!-- 首页 -->
+      <section
+        id="home-page"
+        class="page min-w-full h-screen p-4 sm:p-6 lg:p-8 flex flex-col"
+      >
+        <header class="py-4 sm:py-6 w-full max-w-7xl mx-auto">
+          <nav class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <i
+                class="bx bx-book-heart text-2xl text-primary-600 dark:text-primary-400"
+              ></i>
+              <span
+                class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500"
+                >思考随笔</span
+              >
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+              <a
+                href="#home-page"
+                class="font-medium text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >首页</a
+              >
+              <a
+                href="#blog-page"
+                class="font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >博客</a
+              >
+              <a
+                href="#about-page"
+                class="font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >关于</a
+              >
+            </div>
+            <div class="md:hidden">
+              <button
+                class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <i class="bx bx-menu text-2xl"></i>
+              </button>
+            </div>
+          </nav>
+        </header>
+
+        <main
+          class="flex-1 flex flex-col md:flex-row items-center justify-center gap-8 w-full max-w-7xl mx-auto"
+        >
+          <div class="w-full md:w-1/2 space-y-6 md:space-y-8">
+            <h1
+              class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight"
+            >
+              <span class="block">探索思考，</span>
+              <span
+                class="block bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500"
+                >分享生活点滴</span
+              >
+            </h1>
+            <p
+              class="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl"
+            >
+              欢迎来到我的个人世界，这里记录着我对技术、设计、生活的思考与感悟。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <a
+                href="#blog-page"
+                class="inline-flex justify-center items-center px-6 py-3 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors shadow-sm hover:shadow-md"
+              >
+                阅读博客
+                <i class="bx bx-right-arrow-alt ml-2"></i>
+              </a>
+              <a
+                href="#about-page"
+                class="inline-flex justify-center items-center px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                了解我
+              </a>
+            </div>
+          </div>
+          <div class="w-full md:w-1/2 flex justify-center">
+            <div
+              class="relative aspect-square w-full max-w-md rounded-2xl overflow-hidden gradient-bg"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643"
+                alt="Writing on laptop"
+                class="w-full h-full object-cover mix-blend-overlay opacity-80"
+              />
+            </div>
+          </div>
+        </main>
+
+        <div class="py-6 w-full max-w-7xl mx-auto">
+          <div class="flex justify-center gap-6">
+            <a
+              href="#"
+              class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            >
+              <i class="bx bxl-twitter text-2xl"></i>
+            </a>
+            <a
+              href="#"
+              class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            >
+              <i class="bx bxl-instagram text-2xl"></i>
+            </a>
+            <a
+              href="#"
+              class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            >
+              <i class="bx bxl-github text-2xl"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 博客列表页 -->
+      <section
+        id="blog-page"
+        class="page min-w-full h-screen p-4 sm:p-6 lg:p-8 flex flex-col"
+      >
+        <header class="py-4 sm:py-6 w-full max-w-7xl mx-auto">
+          <nav class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <i
+                class="bx bx-book-heart text-2xl text-primary-600 dark:text-primary-400"
+              ></i>
+              <span
+                class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500"
+                >思考随笔</span
+              >
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+              <a
+                href="#home-page"
+                class="font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >首页</a
+              >
+              <a
+                href="#blog-page"
+                class="font-medium text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >博客</a
+              >
+              <a
+                href="#about-page"
+                class="font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >关于</a
+              >
+            </div>
+            <div class="md:hidden">
+              <button
+                class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <i class="bx bx-menu text-2xl"></i>
+              </button>
+            </div>
+          </nav>
+        </header>
+
+        <main class="flex-1 w-full max-w-7xl mx-auto">
+          <div class="mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold mb-4">博客文章</h1>
+            <div class="flex flex-wrap gap-4">
+              <button
+                class="px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-sm font-medium"
+              >
+                全部
+              </button>
+              <button
+                class="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                技术
+              </button>
+              <button
+                class="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                设计
+              </button>
+              <button
+                class="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                生活
+              </button>
+              <button
+                class="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                旅行
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 文章卡片1 -->
+            <article
+              class="rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover-lift"
+            >
+              <a href="#blog-detail-page">
+                <div class="aspect-video overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1551434678-e076c223a692"
+                    alt="Article thumbnail"
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div class="p-5">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      class="px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-medium rounded-full"
+                      >技术</span
+                    >
+                    <span class="text-gray-500 dark:text-gray-400 text-sm"
+                      >2024年3月15日</span
+                    >
+                  </div>
+                  <h2 class="text-xl font-semibold mb-2 line-clamp-2">
+                    现代前端开发的思考与实践
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                    在当今快速发展的前端技术领域，如何构建可维护、高性能的应用成为每个开发者必须思考的问题...
+                  </p>
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                      <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+                        alt="Author avatar"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span class="text-sm font-medium">李明</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+
+            <!-- 文章卡片2 -->
+            <article
+              class="rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover-lift"
+            >
+              <a href="#blog-detail-page">
+                <div class="aspect-video overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1485846234645-a62644f84728"
+                    alt="Article thumbnail"
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div class="p-5">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      class="px-2.5 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs font-medium rounded-full"
+                      >设计</span
+                    >
+                    <span class="text-gray-500 dark:text-gray-400 text-sm"
+                      >2024年3月10日</span
+                    >
+                  </div>
+                  <h2 class="text-xl font-semibold mb-2 line-clamp-2">
+                    极简主义设计的美学价值
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                    极简主义不仅仅是一种设计风格，更是一种生活态度。本文探讨如何将极简主义理念融入设计过程...
+                  </p>
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                      <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+                        alt="Author avatar"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span class="text-sm font-medium">李明</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+
+            <!-- 文章卡片3 -->
+            <article
+              class="rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover-lift"
+            >
+              <a href="#blog-detail-page">
+                <div class="aspect-video overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1519882189396-71b93cb4e9b4"
+                    alt="Article thumbnail"
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div class="p-5">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      class="px-2.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-medium rounded-full"
+                      >生活</span
+                    >
+                    <span class="text-gray-500 dark:text-gray-400 text-sm"
+                      >2024年2月28日</span
+                    >
+                  </div>
+                  <h2 class="text-xl font-semibold mb-2 line-clamp-2">
+                    数字极简主义：如何在信息爆炸的时代保持专注
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                    在这个信息过载的时代，如何减少数字干扰，提高工作效率和生活质量成为现代人必须面对的挑战...
+                  </p>
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                      <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+                        alt="Author avatar"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span class="text-sm font-medium">李明</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+
+            <!-- 文章卡片4 -->
+            <article
+              class="rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover-lift"
+            >
+              <a href="#blog-detail-page">
+                <div class="aspect-video overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1517411032315-54ef2cb783bb"
+                    alt="Article thumbnail"
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div class="p-5">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      class="px-2.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-xs font-medium rounded-full"
+                      >旅行</span
+                    >
+                    <span class="text-gray-500 dark:text-gray-400 text-sm"
+                      >2024年2月15日</span
+                    >
+                  </div>
+                  <h2 class="text-xl font-semibold mb-2 line-clamp-2">
+                    慢旅行：感受城市的真实脉搏
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                    快节奏的生活让我们习惯了走马观花式的旅行，而慢旅行则是一种更深入、更有意义的体验方式...
+                  </p>
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                      <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+                        alt="Author avatar"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span class="text-sm font-medium">李明</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+
+            <!-- 文章卡片5 -->
+            <article
+              class="rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover-lift"
+            >
+              <a href="#blog-detail-page">
+                <div class="aspect-video overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2"
+                    alt="Article thumbnail"
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div class="p-5">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      class="px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-medium rounded-full"
+                      >技术</span
+                    >
+                    <span class="text-gray-500 dark:text-gray-400 text-sm"
+                      >2024年2月5日</span
+                    >
+                  </div>
+                  <h2 class="text-xl font-semibold mb-2 line-clamp-2">
+                    容器化应用开发的最佳实践
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                    Docker和Kubernetes已经成为现代应用部署的标准。本文分享我在容器化开发过程中总结的经验和技巧...
+                  </p>
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                      <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+                        alt="Author avatar"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span class="text-sm font-medium">李明</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+
+            <!-- 文章卡片6 -->
+            <article
+              class="rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover-lift"
+            >
+              <a href="#blog-detail-page">
+                <div class="aspect-video overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1550745165-9bc0b252726f"
+                    alt="Article thumbnail"
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div class="p-5">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      class="px-2.5 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs font-medium rounded-full"
+                      >设计</span
+                    >
+                    <span class="text-gray-500 dark:text-gray-400 text-sm"
+                      >2024年1月20日</span
+                    >
+                  </div>
+                  <h2 class="text-xl font-semibold mb-2 line-clamp-2">
+                    设计系统：构建一致且高效的产品体验
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                    设计系统不仅仅是组件库，而是一套完整的设计语言和规范。如何构建和维护一个高效的设计系统...
+                  </p>
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
+                      <img
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+                        alt="Author avatar"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <span class="text-sm font-medium">李明</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          </div>
+
+          <div class="mt-8 flex justify-center">
+            <nav
+              class="inline-flex rounded-md shadow-sm"
+              aria-label="Pagination"
+            >
+              <a
+                href="#"
+                class="relative inline-flex items-center rounded-l-md px-3 py-2 text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <i class="bx bx-chevron-left text-lg"></i>
+                <span class="sr-only">上一页</span>
+              </a>
+              <a
+                href="#"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-primary-600 hover:bg-primary-700 transition-colors"
+                >1</a
+              >
+              <a
+                href="#"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >2</a
+              >
+              <a
+                href="#"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >3</a
+              >
+              <span
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700"
+                >...</span
+              >
+              <a
+                href="#"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >8</a
+              >
+              <a
+                href="#"
+                class="relative inline-flex items-center rounded-r-md px-3 py-2 text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <i class="bx bx-chevron-right text-lg"></i>
+                <span class="sr-only">下一页</span>
+              </a>
+            </nav>
+          </div>
+        </main>
+      </section>
+
+      <!-- 博客详情页 -->
+      <section
+        id="blog-detail-page"
+        class="page min-w-full h-screen p-4 sm:p-6 lg:p-8 flex flex-col"
+      >
+        <header class="py-4 sm:py-6 w-full max-w-7xl mx-auto">
+          <nav class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <i
+                class="bx bx-book-heart text-2xl text-primary-600 dark:text-primary-400"
+              ></i>
+              <span
+                class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500"
+                >思考随笔</span
+              >
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+              <a
+                href="#home-page"
+                class="font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >首页</a
+              >
+              <a
+                href="#blog-page"
+                class="font-medium text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >博客</a
+              >
+              <a
+                href="#about-page"
+                class="font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >关于</a
+              >
+            </div>
+            <div class="md:hidden">
+              <button
+                class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <i class="bx bx-menu text-2xl"></i>
+              </button>
+            </div>
+          </nav>
+        </header>
+
+        <main class="flex-1 overflow-y-auto w-full max-w-4xl mx-auto">
+          <article class="py-8">
+            <a
+              href="#blog-page"
+              class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 mb-6"
+            >
+              <i class="bx bx-arrow-back mr-2"></i>
+              返回博客列表
+            </a>
+
+            <div class="mb-8">
+              <span
+                class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full"
+                >技术</span
+              >
+              <h1 class="text-3xl md:text-4xl font-bold mt-4 mb-4">
+                现代前端开发的思考与实践
+              </h1>
+              <div
+                class="flex items-center gap-4 text-gray-600 dark:text-gray-400"
+              >
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                    <img
+                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+                      alt="Author avatar"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <span class="font-medium text-gray-900 dark:text-white"
+                    >李明</span
+                  >
+                </div>
+                <span>2024年3月15日</span>
+                <span>阅读时间: 10分钟</span>
+              </div>
+            </div>
+
+            <div class="rounded-xl overflow-hidden mb-8">
+              <img
+                src="https://images.unsplash.com/photo-1551434678-e076c223a692"
+                alt="Article header image"
+                class="w-full h-auto object-cover"
+              />
+            </div>
+
+            <div class="prose prose-lg dark:prose-invert max-w-none">
+              <p>
+                在当今快速发展的前端技术领域，如何构建可维护、高性能的应用成为每个开发者必须思考的问题。随着Web应用复杂度的不断提高，前端开发已经不再是简单的HTML、CSS和JavaScript的组合，而是涉及到工程化、模块化、组件化等多方面的系统工程。
+              </p>
+
+              <h2>现代前端开发的挑战</h2>
+              <p>现代前端开发面临着诸多挑战：</p>
+              <ul>
+                <li>技术栈更新迭代快速，学习成本高</li>
+                <li>项目复杂度增加，代码维护难度大</li>
+                <li>性能优化要求提高，用户体验至关重要</li>
+                <li>安全问题日益突出，防范措施必不可少</li>
+                <li>跨平台开发需求增多，适配成本提高</li>
+              </ul>
+
+              <h2>组件化开发的价值</h2>
+              <p>
+                组件化开发是现代前端开发的核心理念之一。通过将UI拆分为独立、可复用的组件，我们可以：
+              </p>
+              <ul>
+                <li>提高代码复用率，减少重复工作</li>
+                <li>简化代码维护，每个组件只负责单一功能</li>
+                <li>便于团队协作，不同成员可以并行开发不同组件</li>
+                <li>加快开发速度，组件库一旦建立可持续使用</li>
+              </ul>
+
+              <p>
+                React、Vue、Angular等现代前端框架都基于组件化思想，提供了完善的组件化解决方案。
+              </p>
+
+              <h2>状态管理的演进</h2>
+              <p>
+                随着应用复杂度的提高，前端状态管理变得尤为重要。从早期的全局变量、jQuery操作DOM，到现在的Redux、Vuex、MobX等专业状态管理库，前端状态管理经历了质的飞跃。
+              </p>
+
+              <p>好的状态管理应该满足以下几点：</p>
+              <ul>
+                <li>单一数据源，避免数据不一致</li>
+                <li>状态只读，通过派发动作(action)更新状态</li>
+                <li>使用纯函数进行状态变更，保证可预测性</li>
+                <li>开发者工具支持，便于调试和时间旅行</li>
+              </ul>
+
+              <h2>构建工具与模块化</h2>
+              <p>
+                webpack、Vite、Rollup等构建工具极大地提升了前端开发效率。通过这些工具，我们可以：
+              </p>
+              <ul>
+                <li>使用ES6+语法，自动转换为兼容性更好的代码</li>
+                <li>模块化开发，按需加载，减小包体积</li>
+                <li>自动化处理CSS前缀、图片压缩等琐碎工作</li>
+                <li>热更新开发体验，提高开发效率</li>
+              </ul>
+
+              <h2>性能优化的实践</h2>
+              <p>前端性能优化是一个永恒的话题，以下是一些实用的优化策略：</p>
+              <ul>
+                <li>资源压缩与合并，减少HTTP请求</li>
+                <li>懒加载与代码分割，按需加载资源</li>
+                <li>服务端渲染(SSR)与静态站点生成(SSG)，提升首屏加载速度</li>
+                <li>缓存策略优化，减少网络请求</li>
+                <li>使用CDN加速资源加载</li>
+                <li>Web Worker处理复杂计算，避免阻塞主线程</li>
+              </ul>
+
+              <h2>未来展望</h2>
+              <p>
+                前端开发正在向更加智能化、自动化的方向发展。WebAssembly将带来更高的执行效率，AI辅助开发工具将提升开发效率，微前端架构将使大型应用更加灵活可扩展。
+              </p>
+
+              <p>
+                作为前端开发者，我们应该保持对新技术的好奇心和学习热情，同时不忘基础，打牢计算机科学、数据结构与算法、设计模式等基础知识。只有这样，才能在技术浪潮中立于不败之地。
+              </p>
+
+              <h2>结语</h2>
+              <p>
+                前端开发是一个充满活力和创新的领域，也是一个需要不断学习和适应变化的领域。希望本文的思考和实践经验能对你有所启发。欢迎在评论区分享你的看法和经验！
+              </p>
+            </div>
+
+            <div
+              class="border-t border-gray-200 dark:border-gray-800 mt-12 pt-8"
+            >
+              <h3 class="text-xl font-semibold mb-6">相关文章</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a
+                  href="#"
+                  class="flex items-start gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <div class="w-20 h-20 shrink-0 rounded-md overflow-hidden">
+                    <img
+                      src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2"
+                      alt="Related article"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h4 class="font-medium mb-1 line-clamp-2">
+                      容器化应用开发的最佳实践
+                    </h4>
+                    <span class="text-sm text-gray-600 dark:text-gray-400"
+                      >2024年2月5日</span
+                    >
+                  </div>
+                </a>
+                <a
+                  href="#"
+                  class="flex items-start gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <div class="w-20 h-20 shrink-0 rounded-md overflow-hidden">
+                    <img
+                      src="https://images.unsplash.com/photo-1550745165-9bc0b252726f"
+                      alt="Related article"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h4 class="font-medium mb-1 line-clamp-2">
+                      设计系统：构建一致且高效的产品体验
+                    </h4>
+                    <span class="text-sm text-gray-600 dark:text-gray-400"
+                      >2024年1月20日</span
+                    >
+                  </div>
+                </a>
+              </div>
+            </div>
+          </article>
+        </main>
+      </section>
+
+      <!-- 关于页面 -->
+      <section
+        id="about-page"
+        class="page min-w-full h-screen p-4 sm:p-6 lg:p-8 flex flex-col"
+      >
+        <header class="py-4 sm:py-6 w-full max-w-7xl mx-auto">
+          <nav class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <i
+                class="bx bx-book-heart text-2xl text-primary-600 dark:text-primary-400"
+              ></i>
+              <span
+                class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-secondary-500"
+                >思考随笔</span
+              >
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+              <a
+                href="#home-page"
+                class="font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >首页</a
+              >
+              <a
+                href="#blog-page"
+                class="font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >博客</a
+              >
+              <a
+                href="#about-page"
+                class="font-medium text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                >关于</a
+              >
+            </div>
+            <div class="md:hidden">
+              <button
+                class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <i class="bx bx-menu text-2xl"></i>
+              </button>
+            </div>
+          </nav>
+        </header>
+
+        <main class="flex-1 w-full max-w-4xl mx-auto py-8">
+          <div
+            class="flex flex-col md:flex-row gap-10 items-center md:items-start"
+          >
+            <div
+              class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden gradient-bg flex-shrink-0"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+                alt="Profile photo"
+                class="w-full h-full object-cover mix-blend-overlay opacity-80"
+              />
+            </div>
+
+            <div class="flex-1">
+              <h1 class="text-3xl md:text-4xl font-bold mb-4">李明</h1>
+              <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                前端工程师 | UI/UX设计师 | 技术写作者
+              </p>
+
+              <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
+                <p>
+                  你好！我是李明，一位热爱技术与设计的创作者。我在前端开发领域有着8年的经验，对用户体验设计充满热情。
+                </p>
+                <p>
+                  我相信技术应该服务于人，而不是相反。在我的职业生涯中，我始终致力于创造既美观又实用的数字产品，帮助用户解决实际问题。
+                </p>
+                <p>
+                  在这个博客中，我将分享我在技术、设计和生活方面的思考与实践经验。无论是前端开发的最佳实践，还是UI设计的美学原则，亦或是对数字生活的反思，我都希望能与你一同探讨。
+                </p>
+                <p>
+                  除了写代码和设计界面，我还喜欢摄影、阅读和旅行。这些爱好让我能够从不同角度观察世界，获取灵感。
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-4 mb-8">
+                <a
+                  href="#"
+                  class="inline-flex items-center px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 transition-colors"
+                >
+                  <i class="bx bx-envelope mr-2 text-lg"></i>
+                  联系我
+                </a>
+                <a
+                  href="#"
+                  class="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <i class="bx bxl-github mr-2 text-lg"></i>
+                  GitHub
+                </a>
+                <a
+                  href="#"
+                  class="inline-flex items-center px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <i class="bx bxl-twitter mr-2 text-lg"></i>
+                  Twitter
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-6">技能与专长</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center gap-4 mb-4">
+                  <div
+                    class="w-12 h-12 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                  >
+                    <i class="bx bx-code-alt text-2xl"></i>
+                  </div>
+                  <h3 class="text-xl font-semibold">前端开发</h3>
+                </div>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  熟练掌握现代前端技术栈，包括HTML5、CSS3、JavaScript/TypeScript，以及React、Vue等框架。
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >React</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >Vue</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >TypeScript</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >Tailwind CSS</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >Next.js</span
+                  >
+                </div>
+              </div>
+
+              <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center gap-4 mb-4">
+                  <div
+                    class="w-12 h-12 flex items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+                  >
+                    <i class="bx bx-palette text-2xl"></i>
+                  </div>
+                  <h3 class="text-xl font-semibold">UI/UX 设计</h3>
+                </div>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  擅长用户体验设计与界面设计，注重用户调研、交互设计和视觉美学的和谐统一。
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >Figma</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >用户研究</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >原型设计</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >交互设计</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >设计系统</span
+                  >
+                </div>
+              </div>
+
+              <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center gap-4 mb-4">
+                  <div
+                    class="w-12 h-12 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
+                  >
+                    <i class="bx bx-book-open text-2xl"></i>
+                  </div>
+                  <h3 class="text-xl font-semibold">技术写作</h3>
+                </div>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  热衷于分享技术知识和经验，擅长将复杂概念转化为清晰、易懂的文章和教程。
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >教程创作</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >技术博客</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >文档编写</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >演讲分享</span
+                  >
+                </div>
+              </div>
+
+              <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center gap-4 mb-4">
+                  <div
+                    class="w-12 h-12 flex items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
+                  >
+                    <i class="bx bx-camera text-2xl"></i>
+                  </div>
+                  <h3 class="text-xl font-semibold">摄影与创意</h3>
+                </div>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  将摄影作为创意表达的媒介，擅长捕捉生活中的美好瞬间和独特视角。
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >街头摄影</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >风景摄影</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >人文纪实</span
+                  >
+                  <span
+                    class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-full"
+                    >后期处理</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-6">联系我</h2>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+              <p class="text-gray-600 dark:text-gray-300 mb-6">
+                如果你对我的文章有任何问题，或者想要探讨合作机会，欢迎通过以下方式联系我：
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                  >
+                    <i class="bx bx-envelope text-xl"></i>
+                  </div>
+                  <div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400 block"
+                      >邮箱</span
+                    >
+                    <a
+                      href="mailto:contact@example.com"
+                      class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                      >contact@example.com</a
+                    >
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                  >
+                    <i class="bx bxl-twitter text-xl"></i>
+                  </div>
+                  <div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400 block"
+                      >Twitter</span
+                    >
+                    <a
+                      href="#"
+                      class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                      >@limingtw</a
+                    >
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                  >
+                    <i class="bx bxl-github text-xl"></i>
+                  </div>
+                  <div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400 block"
+                      >GitHub</span
+                    >
+                    <a
+                      href="#"
+                      class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                      >github.com/liming</a
+                    >
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                  >
+                    <i class="bx bxl-linkedin text-xl"></i>
+                  </div>
+                  <div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400 block"
+                      >LinkedIn</span
+                    >
+                    <a
+                      href="#"
+                      class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                      >linkedin.com/in/liming</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </section>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 深色/浅色模式切换
+        const themeToggleBtn = document.getElementById("theme-toggle");
+        const prefersDarkScheme = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        );
+
+        // 初始化主题
+        if (
+          localStorage.getItem("theme") === "dark" ||
+          (!localStorage.getItem("theme") && prefersDarkScheme.matches)
+        ) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+
+        // 切换主题
+        themeToggleBtn.addEventListener("click", function () {
+          if (document.documentElement.classList.contains("dark")) {
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+          } else {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+          }
+        });
+
+        // 监听系统主题变化
+        prefersDarkScheme.addEventListener("change", function (e) {
+          if (!localStorage.getItem("theme")) {
+            if (e.matches) {
+              document.documentElement.classList.add("dark");
+            } else {
+              document.documentElement.classList.remove("dark");
+            }
+          }
+        });
+
+        // 页面滚动处理
+        const pageLinks = document.querySelectorAll('a[href^="#"]');
+        pageLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: "smooth",
+                inline: "start",
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
