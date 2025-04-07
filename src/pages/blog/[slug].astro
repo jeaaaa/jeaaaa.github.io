@@ -5,7 +5,7 @@ import { formatDate, getReadingTime } from "../../lib/utils";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
-  return blogEntries.map((entry) => ({
+  return blogEntries.map((entry: { slug: any }) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
@@ -18,15 +18,15 @@ const { Content } = await entry.render();
 const allPosts = await getCollection("blog");
 const relatedPosts = allPosts
   .filter(
-    (post) =>
+    (post: { data: { category: any }; slug: any }) =>
       post.data.category === entry.data.category && post.slug !== entry.slug
   )
   .sort(() => Math.random() - 0.5) // 随机排序
   .slice(0, 2); // 只取前两篇
 
 // 获取分类对应的样式类
-function getCategoryColorClass(categoryName) {
-  const colorMap = {
+function getCategoryColorClass(categoryName: string | number) {
+  const colorMap: { [key: string]: string } = {
     技术: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
     设计: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
     生活: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
@@ -34,7 +34,7 @@ function getCategoryColorClass(categoryName) {
     default: "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300",
   };
 
-  return colorMap[categoryName] || colorMap.default;
+  return colorMap[String(categoryName)] || colorMap.default;
 }
 
 // 估算阅读时间
@@ -104,29 +104,38 @@ const readingTime = getReadingTime(entry.body);
           <div class="border-t border-gray-200 dark:border-gray-800 mt-12 pt-8 slide-up delay-200">
             <h3 class="text-xl font-semibold mb-6">相关文章</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {relatedPosts.map((post) => (
-                <a
-                  href={`/blog/${post.slug}`}
-                  class="flex items-start gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors hover-lift"
-                >
-                  <div class="w-20 h-20 shrink-0 rounded-md overflow-hidden">
-                    <img
-                      src={post.data.coverImage}
-                      alt={`${post.data.title}的相关文章图片`}
-                      class="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div>
-                    <h4 class="font-medium mb-1 line-clamp-2">
-                      {post.data.title}
-                    </h4>
-                    <span class="text-sm text-gray-600 dark:text-gray-400">
-                      {formatDate(post.data.publishDate)}
-                    </span>
-                  </div>
-                </a>
-              ))}
+              {relatedPosts.map(
+                (post: {
+                  slug: any;
+                  data: {
+                    coverImage: any;
+                    title: any;
+                    publishDate: string | Date;
+                  };
+                }) => (
+                  <a
+                    href={`/blog/${post.slug}`}
+                    class="flex items-start gap-4 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors hover-lift"
+                  >
+                    <div class="w-20 h-20 shrink-0 rounded-md overflow-hidden">
+                      <img
+                        src={post.data.coverImage}
+                        alt={`${post.data.title}的相关文章图片`}
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div>
+                      <h4 class="font-medium mb-1 line-clamp-2">
+                        {post.data.title}
+                      </h4>
+                      <span class="text-sm text-gray-600 dark:text-gray-400">
+                        {formatDate(post.data.publishDate)}
+                      </span>
+                    </div>
+                  </a>
+                )
+              )}
             </div>
           </div>
         )

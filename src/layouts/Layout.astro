@@ -65,7 +65,7 @@ const {
   </head>
   <body>
     <div class="flex flex-col min-h-screen">
-      <Header client:load currentPath={currentPath} />
+      <Header currentPath={currentPath} client:load />
 
       <main class="flex-1 page-transition">
         <slot />

@@ -5,33 +5,52 @@ import BlogList from "../../components/blog/blog-list";
 import type { BlogPost } from "../../components/blog/blog-card";
 
 // 获取所有非草稿状态的博客文章
-const allBlogPosts = await getCollection("blog", ({ data }) => {
-  return import.meta.env.PROD ? !data.draft : true;
-});
+const allBlogPosts = await getCollection(
+  "blog",
+  ({ data }: { data: { draft?: boolean } }) => {
+    return import.meta.env.PROD ? !data.draft : true;
+  }
+);
 
 // 按发布日期排序，最新的在前面
 const sortedPosts = allBlogPosts.sort(
-  (a, b) =>
+  (
+    a: { data: { publishDate: string | number | Date } },
+    b: { data: { publishDate: string | number | Date } }
+  ) =>
     new Date(b.data.publishDate).valueOf() -
     new Date(a.data.publishDate).valueOf()
 );
 
 // 将内容集合转换为BlogPost类型
-const posts: BlogPost[] = sortedPosts.map((post) => ({
-  slug: post.slug,
-  title: post.data.title,
-  excerpt: post.data.description,
-  publishDate: post.data.publishDate.toISOString(),
-  category: {
-    name: post.data.category,
-  },
-  coverImage: post.data.coverImage,
-  author: {
-    name: post.data.author.name,
-    avatar: post.data.author.avatar,
-  },
-  readingTime: Math.ceil(post.body.length / 1000), // 简单估算阅读时间
-}));
+const posts: BlogPost[] = sortedPosts.map(
+  (post: {
+    slug: any;
+    data: {
+      title: any;
+      description: any;
+      publishDate: { toISOString: () => any };
+      category: any;
+      coverImage: any;
+      author: { name: any; avatar: any };
+    };
+    body: string | any[];
+  }) => ({
+    slug: post.slug,
+    title: post.data.title,
+    excerpt: post.data.description,
+    publishDate: post.data.publishDate.toISOString(),
+    category: {
+      name: post.data.category,
+    },
+    coverImage: post.data.coverImage,
+    author: {
+      name: post.data.author.name,
+      avatar: post.data.author.avatar,
+    },
+    readingTime: Math.ceil(post.body.length / 1000), // 简单估算阅读时间
+  })
+);
 
 // 提取所有博客分类
 const categories = Array.from(
@@ -48,6 +67,6 @@ const categories = Array.from(
   currentPath={Astro.url.pathname}
 >
   <div class="container mx-auto py-12 px-4 sm:px-6">
-    <BlogList client:load posts={posts} categories={categories} />
+    <BlogList posts={posts} categories={categories} client:load />
   </div>
 </Layout>
