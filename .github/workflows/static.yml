@@ -36,8 +36,16 @@ jobs:
           node-version: "20"
       - name: Install dependencies
         run: npm install --legacy-peer-deps
-      - name: Build Astro app
-        run: npm run build
+      - name: Debug MDX files
+        run: |
+          echo "Listing MDX files in the project:"
+          find . -name "*.mdx" -type f
+          echo "Checking for minimalist-design.mdx:"
+          find . -name "minimalist-design*.mdx" -type f
+      - name: Build Astro app with verbose output
+        run: npm run build -- --verbose
+        env:
+          DEBUG: "astro:*"
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
